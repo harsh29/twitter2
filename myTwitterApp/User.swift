@@ -18,6 +18,10 @@ class User{
     
     var dictionary: NSDictionary
     
+    var followersCount: Int?
+    var followingCount: Int?
+    var tweetsCount: Int?
+    
     
     //constructor for the class
     init(dictionary: NSDictionary) {
@@ -30,6 +34,11 @@ class User{
             profileURL = URL(string: profileURLString)
         }
         tagline = dictionary["description"] as? String
+        
+        followersCount = dictionary["followers_count"] as? Int
+        followingCount = dictionary["friends_count"] as? Int
+        tweetsCount = dictionary["statuses_count"] as? Int
+        
     }
     
     static var _currentUser: User?

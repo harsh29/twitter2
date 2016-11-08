@@ -67,13 +67,17 @@ class LoginViewController: UIViewController {
          */
     */
         
-        TwitterApiManager.sharedInstance?.login(success: { 
-            self.performSegue(withIdentifier: "loginSegue", sender: nil)
-            }, failure: { (error:Error) in
-                print("error: \(error.localizedDescription)")
-        })
+        TwitterApiManager.sharedInstance?.login(success: {
+            if let myDelegate = UIApplication.shared.delegate as? AppDelegate {
+                myDelegate.login()
+            }
+        }) { (error: Error) in
+            print("error: \(error.localizedDescription)")
+        }
     }
     
+}
+
     
     
     
@@ -88,4 +92,3 @@ class LoginViewController: UIViewController {
     }
     */
 
-}

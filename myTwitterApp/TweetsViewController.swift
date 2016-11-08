@@ -8,12 +8,14 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController {
+
+class TweetsViewController: UIViewController, TweetDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     let refreshControl = UIRefreshControl()
 
     var tweets = [Tweet]()
+    var profileSegueUser: User?
     
     
     override func viewDidLoad() {
@@ -44,7 +46,21 @@ class TweetsViewController: UIViewController {
         
         
     }
+    
+    func viewProfile(user: User?)
+    {
+        self.profileSegueUser = user!
+        performSegue(withIdentifier: "ShowProfileSegue", sender: self)
+    }
+    
 
+    @IBAction func onUserImageTap(_ sender: UITapGestureRecognizer) {
+        
+        if sender.state == .ended
+        {
+            
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -95,6 +111,11 @@ class TweetsViewController: UIViewController {
             tweetCreateVC.user = User.currentUser
             tweetCreateVC.delegate = self
         }
+        else if segue.identifier == "showProfileTweet" {
+            let navigationController = segue.destination as! UINavigationController
+            let profileVC = navigationController.topViewController as! ProfileViewController
+            profileVC.user = profileSegueUser;
+        }
     }
  
 }
@@ -110,7 +131,7 @@ extension TweetsViewController: UITableViewDataSource, UITableViewDelegate{
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell") as! TweetTableViewCell
         
-        cell.tweet = tweets[indexPath.row]
+        cell.setData(tweet: tweets[indexPath.row], tweetDelegate: self)
         return cell
     }
     
